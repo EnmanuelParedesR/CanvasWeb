@@ -28,7 +28,7 @@ namespace CanvasWeb.Controllers
         {
            
             db.Configuration.ProxyCreationEnabled = false;
-            return Json(db.Canvas.Where(e => e.CanvasId == id && User.Identity.GetUserId<int>() == e.UserId).FirstOrDefault(), JsonRequestBehavior.AllowGet);
+            return Json(db.Canvas.Where(e => e.CanvasId == id && User.Identity.Name == e.AspNetUser.UserName).FirstOrDefault(), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Canvas/Details/5
