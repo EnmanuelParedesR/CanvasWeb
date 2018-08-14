@@ -1,0 +1,137 @@
+﻿@model IEnumerable<CanvasWeb.Models.ADO.Canva>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Key_Partners)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Value_Propositions)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer_Relationships)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer_Segments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Key_Resources)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Channels)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cost_Structure)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Revenue_Streams)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AspNetUser.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Key_Partners)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Value_Propositions)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer_Relationships)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer_Segments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Key_Resources)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Channels)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cost_Structure)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Revenue_Streams)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AspNetUser.Email)
+        </td>
+        <td>
+
+            <a class="details" id="@item.CanvasId" href="#">Details</a>
+          
+        </td>
+    </tr>
+}
+
+</table>
+
+<div id="details">
+
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('a.details').click(function () {
+                var id = $(this).attr("id");
+                $.ajax({
+                    url: '/Canvas/detailasjson', type: "GET", dataType: "json",
+                    data: {id:id},
+                    success: function (data) {
+                        content = "<h3>Canvas Detail</h3>";
+                        content += "<dl class=\"dl-horizontal\">";
+                        content += "<dt>Key Partner</dt><dd>" + data.Key_Resources + "</dd>";
+                        content += "<dt>Value Propositions</dt><dd>" + data.Value_Propositions + "</dd>";
+                        content += "<dt>Customer Relationships</dt><dd>" + data.Customer_Segments + "</dd>";
+                        content += "<dt>Customer Segments</dt><dd>" + data.Customer_Segments + "</dd>";
+                        content += "<dt>Key resources</dt><dd>" + data.Key_Resources + "</dd>";
+                        content += "<dt>Channels</dt><dd>" + data.Channels + "</dd>";
+                        content += "<dt>Cost Structure</dt><dd>" + data.Cost_Structure + "</dd>";
+                        content += "<dt>Revenue Streams</dt><dd>" + data.Revenue_Streams + "</dd>";
+                        content += "<dt>Email </dt><dd>" + data.AspNetUser + "</dd>";
+                        content += " </dl>";
+                        $('#details').html(content);
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                        alert(status);
+                        alert(error);
+                    }
+                });
+
+            });
+            $('a.delete').click(function () {
+                var id = $(this).attr("id");
+                $.ajax({
+                    url: '/employee/delete', type: "POST", dataType: "text",
+                    data: { id: id },
+                    success: function (data) {
+                        $('#tr' + id).html(data);
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                        alert(status);
+                        alert(error);
+                    }
+                });
+            });
+        });
+
+    </script>
+}
